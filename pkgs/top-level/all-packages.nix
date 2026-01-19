@@ -1565,9 +1565,7 @@ with pkgs;
 
   gams = callPackage ../tools/misc/gams (config.gams or { });
 
-  gancioPlugins = recurseIntoAttrs (
-    callPackage ../by-name/ga/gancio/plugins.nix { inherit (gancio) nodejs; }
-  );
+  gancioPlugins = recurseIntoAttrs (callPackage ../by-name/ga/gancio/plugins.nix { });
 
   github-changelog-generator = callPackage ../development/tools/github-changelog-generator { };
 
@@ -2429,8 +2427,7 @@ with pkgs;
 
   kramdown-asciidoc = callPackage ../tools/typesetting/kramdown-asciidoc { };
 
-  rocmPackages = recurseIntoAttrs rocmPackages_6;
-  rocmPackages_6 = callPackage ../development/rocm-modules/6 { };
+  rocmPackages = recurseIntoAttrs (callPackage ../development/rocm-modules { });
 
   tsm-client-withGui = callPackage ../by-name/ts/tsm-client/package.nix { enableGui = true; };
 
@@ -2779,10 +2776,6 @@ with pkgs;
   hassil = with python3Packages; toPythonApplication hassil;
 
   haste-client = callPackage ../tools/misc/haste-client { };
-
-  halide = callPackage ../development/compilers/halide {
-    llvmPackages = llvmPackages_19;
-  };
 
   hareThirdParty = recurseIntoAttrs (callPackage ./hare-third-party.nix { });
 
@@ -4105,6 +4098,7 @@ with pkgs;
 
   colmapWithCuda = colmap.override { cudaSupport = true; };
 
+  opensplatWithRocm = opensplat.override { rocmSupport = true; };
   opensplatWithCuda = opensplat.override { cudaSupport = true; };
 
   chickenPackages_4 = recurseIntoAttrs (callPackage ../development/compilers/chicken/4 { });
@@ -4151,6 +4145,7 @@ with pkgs;
   corretto11 = javaPackages.compiler.corretto11;
   corretto17 = javaPackages.compiler.corretto17;
   corretto21 = javaPackages.compiler.corretto21;
+  corretto25 = javaPackages.compiler.corretto25;
 
   inherit (callPackage ../development/compilers/crystal { })
     crystal_1_14
@@ -5942,10 +5937,6 @@ with pkgs;
   black = with python3Packages; toPythonApplication black;
 
   black-macchiato = with python3Packages; toPythonApplication black-macchiato;
-
-  buck = callPackage ../development/tools/build-managers/buck {
-    python3 = python311;
-  };
 
   build2 = callPackage ../development/tools/build-managers/build2 {
     # Break cycle by using self-contained toolchain for bootstrapping
@@ -8791,8 +8782,6 @@ with pkgs;
 
   home-assistant-cli = callPackage ../servers/home-assistant/cli.nix { };
 
-  home-assistant-component-tests = recurseIntoAttrs home-assistant.tests.components;
-
   icingaweb2-ipl = callPackage ../servers/icingaweb2/ipl.nix { };
   icingaweb2-thirdparty = callPackage ../servers/icingaweb2/thirdparty.nix { };
   icingaweb2 = callPackage ../servers/icingaweb2 { };
@@ -11293,10 +11282,6 @@ with pkgs;
 
   openambit = qt5.callPackage ../applications/misc/openambit { };
 
-  openbox-menu = callPackage ../applications/misc/openbox-menu {
-    stdenv = gccStdenv;
-  };
-
   openbrf = libsForQt5.callPackage ../applications/misc/openbrf { };
 
   opencpn = callPackage ../applications/misc/opencpn {
@@ -11829,8 +11814,6 @@ with pkgs;
   tuxclocker-without-unfree = libsForQt5.callPackage ../applications/misc/tuxclocker { };
 
   twmn = libsForQt5.callPackage ../applications/misc/twmn { };
-
-  tests-stdenv-gcc-stageCompare = callPackage ../test/stdenv/gcc-stageCompare.nix { };
 
   twinkle = qt5.callPackage ../applications/networking/instant-messengers/twinkle { };
 
@@ -12615,12 +12598,6 @@ with pkgs;
   };
 
   tibia = pkgsi686Linux.callPackage ../games/tibia { };
-
-  speed_dreams = callPackage ../games/speed-dreams {
-    # Torcs wants to make shared libraries linked with plib libraries (it provides static).
-    # i686 is the only platform I know than can do that linking without plib built with -fPIC
-    libpng = libpng12;
-  };
 
   ultrastar-creator = libsForQt5.callPackage ../tools/misc/ultrastar-creator { };
 
